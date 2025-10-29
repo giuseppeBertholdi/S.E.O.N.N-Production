@@ -6,6 +6,10 @@ import ReactMarkdown from 'react-markdown';
 const GEMINI_API_KEY = 'AIzaSyBjDD7u_Th5FOxFb61WTLjwpnnqC6WWLRg';
 const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
 
+// Endpoint do backend como fallback (para contornar problemas de certificado SSL/Fortinet)
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const CHAT_API_URL = `${API_BASE_URL}/api/chat`;
+
 const SEONN_CONTEXT = 'Você é um assistente sobre Self-Evolving Organic Neural Network (SEONN). A SEONN é uma arquitetura neural dinâmica e auto-organizável, inspirada em princípios biológicos. Componentes: Nós Autônomos, DNA Neural, Plasticidade Sináptica, Núcleo Gerenciador, Grafo Neural Dinâmico. Resultados: 85%+ retenção, 40% redução no tempo de adaptação. Aplicações: Robótica, Diagnóstico Médico, Cibersegurança.';
 
 function Chat({ onBack }) {
@@ -25,35 +29,125 @@ function Chat({ onBack }) {
     if (!input.trim()) return;
     
     const userMessage = { role: 'user', content: input };
+    const userInput = input;
     setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
 
     try {
-      const prompt = `${SEONN_CONTEXT}\n\nPergunta: ${input}\n\nResposta:`;
+      const prompt = `${SEONN_CONTEXT}\n\nPergunta: ${userInput}\n\nResposta:`;
       
-      const response = await fetch(GEMINI_API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { 
-            temperature: 0.7, 
-            maxOutputTokens: 1024 
+      // Tentar primeiro chamar diretamente a API do Gemini
+      let response;
+      let usingProxy = false;
+      
+      try {
+        console.log('🔗 Tentando conexão direta com Gemini API...');
+        response = await fetch(GEMINI_API_URL, {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { 
+              temperature: 0.7, 
+              maxOutputTokens: 1024 
+            }
+          }),
+          mode: 'cors',
+          credentials: 'omit'
+        });
+
+        if (!response.ok) {
+          throw new Error(`Erro HTTP ${response.status}`);
+        }
+        
+        console.log('✅ Conexão direta bem-sucedida!');
+      } catch (directError) {
+        // Se falhar com erro de certificado/SSL, usar backend como proxy
+        if (directError.message.includes('Failed to fetch') || 
+            directError.message.includes('ERR_CERT') || 
+            directError.message.includes('certificate') ||
+            directError.name === 'TypeError') {
+          
+          console.warn('⚠️ Erro na conexão direta, usando backend como proxy...');
+          console.warn('Erro:', directError.message);
+          
+          usingProxy = true;
+          
+          // Tentar via backend proxy
+          response = await fetch(CHAT_API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: userInput })
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            console.error('❌ Erro do backend:', errorData);
+            throw new Error(errorData.error || errorData.details || `Erro HTTP: ${response.status}`);
           }
-        })
-      });
+          
+          console.log('✅ Conexão via proxy bem-sucedida!');
+        } else {
+          throw directError;
+        }
+      }
 
       const data = await response.json();
-      const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || 
-                        'Desculpe, não consegui processar sua pergunta.';
+      
+      // Formato diferente dependendo se veio direto ou via proxy
+      const aiResponse = usingProxy 
+        ? (data.response || 'Desculpe, não consegui processar sua pergunta.')
+        : (data.candidates?.[0]?.content?.parts?.[0]?.text || 'Desculpe, não consegui processar sua pergunta.');
       
       setMessages(prev => [...prev, { role: 'assistant', content: aiResponse }]);
     } catch (error) {
-      console.error('Erro:', error);
+      console.error('Erro completo:', error);
+      console.error('Tipo do erro:', error.constructor.name);
+      console.error('Stack trace:', error.stack);
+      
+      let errorMessage = '❌ Erro ao processar mensagem.\n\n';
+      
+      // Detectar tipo específico de erro
+      if (error.message.includes('backend') || error.message.includes('localhost:5000')) {
+        errorMessage += '🔄 **Erro ao usar proxy do backend**\n\n';
+        errorMessage += 'O sistema tentou usar o backend como proxy, mas falhou.\n\n';
+        errorMessage += '💡 **Verifique:**\n';
+        errorMessage += '1. O backend está rodando? Execute: `python backend_api.py`\n';
+        errorMessage += '2. O servidor está na porta 5000?\n';
+        errorMessage += '3. Verifique os logs do backend\n\n';
+        errorMessage += `Detalhes: ${error.message}`;
+      } else if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+        errorMessage += '🔍 **Erro de Conexão - Fortinet Detectado**\n\n';
+        errorMessage += 'O Fortinet está bloqueando a conexão HTTPS.\n';
+        errorMessage += 'Tentando usar backend como proxy...\n\n';
+        errorMessage += '💡 **Soluções:**\n';
+        errorMessage += '1. ✅ **Inicie o backend**: `python backend_api.py` (resolve o problema)\n';
+        errorMessage += '2. Instale o certificado do Fortinet no sistema\n';
+        errorMessage += '3. Desative temporariamente o Fortinet\n';
+        errorMessage += '4. Use outra rede sem firewall corporativo\n\n';
+        errorMessage += '📋 **Modo automático**: O sistema tentará usar o backend automaticamente se disponível.\n\n';
+        errorMessage += `Detalhes: ${error.message}`;
+      } else if (error.message.includes('NetworkError') || error.message.includes('Network request failed')) {
+        errorMessage += '🌐 **Erro de Rede**\n\n';
+        errorMessage += 'Não foi possível conectar à API do Gemini.\n';
+        errorMessage += 'Verifique sua conexão com a internet.\n\n';
+        errorMessage += `Detalhes: ${error.message}`;
+      } else if (error.message.includes('ERR_CERT') || error.message.includes('SSL') || error.message.includes('certificate')) {
+        errorMessage += '🔒 **Erro de Certificado SSL**\n\n';
+        errorMessage += 'Fortinet interceptando conexão HTTPS.\n\n';
+        errorMessage += '✅ **Solução Rápida**: Execute `python backend_api.py` para usar proxy.\n\n';
+        errorMessage += `Detalhes: ${error.message}`;
+      } else {
+        errorMessage += `**Erro:** ${error.message || 'Erro desconhecido'}\n\n`;
+        errorMessage += `Tipo: ${error.name || 'Unknown'}`;
+      }
+      
       setMessages(prev => [...prev, { 
         role: 'assistant', 
-        content: 'Erro ao processar mensagem. Verifique sua conexão.' 
+        content: errorMessage 
       }]);
     } finally {
       setIsLoading(false);

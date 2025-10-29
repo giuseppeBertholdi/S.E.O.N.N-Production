@@ -98,17 +98,6 @@ function Hero() {
                 <span className="text-primary">Neural Network</span>
               </motion.h1>
               
-              <motion.div
-                variants={itemVariants}
-                whileHover={{ scale: 1.05 }}
-                onClick={() => window.location.href = '/chat'}
-                className="flex items-center gap-5 px-6 py-3 bg-white/90 backdrop-blur-md rounded-full shadow-lg border border-gray-200 hover:border-blue-300 hover:shadow-xl transition-all cursor-pointer"
-              >
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
-                  <Bot className="text-white" size={20} />
-                </div>
-                <span className="text-sm font-medium text-gray-700"> Alguma duvida? Pergunte ao nosso assistente!</span>
-              </motion.div>
             </div>
             
             <motion.p
