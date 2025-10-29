@@ -1,0 +1,15 @@
+# Configuração do dataset para YOLOv8
+# Arquivo gerado automaticamente pelo script prepare_dataset.py
+
+train: data/images/train
+val: data/images/val
+test: data/images/test
+
+# Número de classes
+nc: 2
+
+# Nomes das classes
+names:
+  0: renault
+  1: other
+

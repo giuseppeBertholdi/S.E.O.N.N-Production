@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEONN - Self-Evolving Organic Neural Network</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+    <!-- Header -->
+    <header class="header">
+            <div class="header-content">
+        <div class="logo">
+            <div class="logo-text">
+                <h1>SEONN</h1>
+                <p>Self-Evolving Organic Neural Network</p>
+            </div>
+        </div>
+                <div class="status-indicator" id="statusIndicator">
+                    <div class="status-dot"></div>
+                    <span>Conectando...</span>
+                </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+            <button class="nav-btn active" data-section="demo">Demo</button>
+            <button class="nav-btn" data-section="about">Sobre</button>
+            <button class="nav-btn" data-section="tech">Tecnologia</button>
+            <button class="nav-btn" data-section="stats">Estatísticas</button>
+    </nav>
+
+        <!-- Demo Section -->
+        <section id="demo" class="section active">
+            <div class="section-header">
+                <h2>
+                    <svg class="section-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Demonstração Interativa
+                </h2>
+                <p>Teste a capacidade de classificação da SEONN com imagens de gatos e cachorros</p>
+            </div>
+
+            <div class="demo-container">
+                <div class="upload-section">
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-content">
+                            <div class="upload-icon">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M23 19C23 20.1046 22.1046 21 21 21H3C1.89543 21 1 20.1046 1 19V8C1 6.89543 1.89543 6 3 6H7L9 4H15L17 6H21C22.1046 6 23 6.89543 23 8V19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <circle cx="12" cy="13" r="4" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                    </div>
+                            <h3>Carregue uma Imagem</h3>
+                            <p>Arraste uma imagem aqui ou clique para selecionar</p>
+                            <small>Formatos: JPG, PNG, GIF, WebP</small>
+                    </div>
+                        <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                    </div>
+                </div>
+
+                <div class="result-section" id="resultSection" style="display: none;">
+                    <h3>
+                        <svg class="section-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Resultado da Classificação
+                    </h3>
+                    <div class="result-content">
+                        <div class="image-preview">
+                            <img id="previewImage" alt="Imagem carregada">
+            </div>
+                        <div class="prediction-result">
+                            <div class="prediction" id="prediction"></div>
+                            <div class="confidence" id="confidence"></div>
+                            <div class="probabilities">
+                                <div class="prob-item">
+                                    <span class="prob-label">
+                                        
+                                        Gato:
+                                    </span>
+                                    <div class="prob-bar">
+                                        <div class="prob-fill cat-fill" id="catProbBar"></div>
+                                        <span class="prob-value" id="catProb">0%</span>
+                                    </div>
+                </div>
+                                <div class="prob-item">
+                                    <span class="prob-label">
+                                        Cachorro:
+                                    </span>
+                                    <div class="prob-bar">
+                                        <div class="prob-fill dog-fill" id="dogProbBar"></div>
+                                        <span class="prob-value" id="dogProb">0%</span>
+                            </div>
+                            </div>
+                            </div>
+                            <div class="model-info">
+                                <span class="model-type" id="modelType"></span>
+                                <span class="processing-time" id="processingTime"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section">
+            <div class="section-header">
+                <h2>🔬 Sobre a SEONN</h2>
+                <p>Uma arquitetura neural revolucionária inspirada na biologia</p>
+            </div>
+
+            <div class="about-content">
+                <div class="intro-card">
+                    <h3>🚀 Visão Geral</h3>
+                    <p>A <strong>Self-Evolving Organic Neural Network (SEONN)</strong> representa um avanço significativo no campo da inteligência artificial, propondo uma arquitetura neural dinâmica e auto-organizável, inspirada em princípios biológicos de plasticidade e desenvolvimento neural.</p>
+                    <p>Ao integrar elementos como nós autônomos inteligentes, DNA Neural, plasticidade sináptica virtual e grafos dinâmicos, a SEONN transcende as limitações das redes neurais convencionais, promovendo aprendizado contínuo, adaptação contextual e evolução funcional em tempo real.</p>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔄</div>
+                        <h4>Plasticidade Sináptica</h4>
+                        <p>Conexões se formam e dissolvem dinamicamente baseadas na relevância contextual e frequência de uso.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <h4>Especialização Funcional</h4>
+                        <p>Neurônios desenvolvem especializações emergentes baseadas nas tarefas que executam com maior frequência.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📈</div>
+                        <h4>Aprendizado Contínuo</h4>
+                        <p>A rede evolui continuamente, absorvendo novos dados e se reorganizando sem reprogramação externa.</p>
+                    </div>
+                </div>
+
+                <div class="comparison-card">
+                    <h3>📊 Vantagens sobre Redes Convencionais</h3>
+                    <div class="comparison-grid">
+                        <div class="comparison-item">
+                            <span class="metric">Retenção de Conhecimento</span>
+                            <div class="comparison-bar">
+                                <div class="seonn-bar" style="width: 85%"></div>
+                                <div class="traditional-bar" style="width: 45%"></div>
+                            </div>
+                        </div>
+                        <div class="comparison-item">
+                            <span class="metric">Tempo de Adaptação</span>
+                            <div class="comparison-bar">
+                                <div class="seonn-bar" style="width: 90%"></div>
+                                <div class="traditional-bar" style="width: 60%"></div>
+                            </div>
+                        </div>
+                        <div class="comparison-item">
+                            <span class="metric">Acurácia em Ambientes Dinâmicos</span>
+                            <div class="comparison-bar">
+                                <div class="seonn-bar" style="width: 88%"></div>
+                                <div class="traditional-bar" style="width: 55%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technology Section -->
+        <section id="tech" class="section">
+            <div class="section-header">
+                <h2>
+                    <svg class="section-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Arquitetura Técnica
+                </h2>
+                <p>Componentes fundamentais da SEONN</p>
+            </div>
+
+            <div class="tech-content">
+                <!-- Visualização Cinematográfica da Rede -->
+                <div class="network-visualization">
+                    <h3>
+                        <svg class="section-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="12" cy="12" r="3" fill="currentColor"/>
+                            <path d="M12 1V6M12 18V23M1 12H6M18 12H23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        Demonstração Cinematográfica da SEONN
+                    </h3>
+                    
+                    <div class="visualization-container">
+                        <div class="network-canvas" id="networkCanvas">
+                            <div class="network-controls">
+                                <div class="control-group">
+                                    <button class="control-btn cinematic" id="playBtn">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <polygon points="5,3 19,12 5,21" fill="currentColor"/>
+                                        </svg>
+                                        <span>Iniciar Demonstração</span>
+                                    </button>
+                                    <button class="control-btn cinematic" id="pauseBtn">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <rect x="6" y="4" width="4" height="16" fill="currentColor"/>
+                                            <rect x="14" y="4" width="4" height="16" fill="currentColor"/>
+                                        </svg>
+                                        <span>Pausar</span>
+                                    </button>
+                                    <button class="control-btn cinematic" id="resetBtn">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M3 12A9 9 0 1 0 21 12A9 9 0 1 0 3 12" stroke="currentColor" stroke-width="2"/>
+                                            <path d="M9 12L12 9L15 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                        <span>Reiniciar</span>
+                                    </button>
+                                </div>
+                                <div class="progress-indicator">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="progressFill"></div>
+                                    </div>
+                                    <span class="progress-text" id="progressText">Pronto para iniciar</span>
+                                </div>
+                            </div>
+                            
+                            <div class="network-stage">
+                                <svg class="network-svg cinematic" id="networkSvg" viewBox="0 0 800 600">
+                                    <!-- Cinematic Effects -->
+                                    <defs>
+                                        <!-- Advanced Grid Pattern -->
+                                        <pattern id="cinematicGrid" width="50" height="50" patternUnits="userSpaceOnUse">
+                                            <path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(99, 102, 241, 0.1)" stroke-width="0.5"/>
+                                            <circle cx="25" cy="25" r="1" fill="rgba(99, 102, 241, 0.2)"/>
+                                        </pattern>
+                                        
+                                        <!-- Cinematic Glow Effects -->
+                                        <filter id="cinematicGlow" x="-50%" y="-50%" width="200%" height="200%">
+                                            <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                                            <feMerge> 
+                                                <feMergeNode in="coloredBlur"/>
+                                                <feMergeNode in="SourceGraphic"/>
+                                            </feMerge>
+                                        </filter>
+                                        
+                                        <filter id="neuronGlow" x="-100%" y="-100%" width="300%" height="300%">
+                                            <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+                                            <feColorMatrix type="matrix" values="1 0 0 0 0.4  0 1 0 0 0.4  0 0 1 0 0.9  0 0 0 1 0"/>
+                                            <feMerge> 
+                                                <feMergeNode in="coloredBlur"/>
+                                                <feMergeNode in="SourceGraphic"/>
+                                            </feMerge>
+                                        </filter>
+                                        
+                                        <!-- Cinematic Gradients -->
+                                        <radialGradient id="neuronGradient" cx="50%" cy="50%" r="50%">
+                                            <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+                                            <stop offset="30%" style="stop-color:#6366f1;stop-opacity:1" />
+                                            <stop offset="70%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                                            <stop offset="100%" style="stop-color:#1e1b4b;stop-opacity:1" />
+                                        </radialGradient>
+                                        
+                                        <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                            <stop offset="0%" style="stop-color:#6366f1;stop-opacity:0.9" />
+                                            <stop offset="30%" style="stop-color:#8b5cf6;stop-opacity:0.7" />
+                                            <stop offset="70%" style="stop-color:#06b6d4;stop-opacity:0.5" />
+                                            <stop offset="100%" style="stop-color:#10b981;stop-opacity:0.3" />
+                                        </linearGradient>
+                                        
+                                        <!-- Energy Flow Pattern -->
+                                        <pattern id="energyFlow" width="20" height="20" patternUnits="userSpaceOnUse">
+                                            <path d="M0,10 L20,10" stroke="rgba(99, 102, 241, 0.3)" stroke-width="1" stroke-dasharray="2,2">
+                                                <animate attributeName="stroke-dashoffset" values="0;20" dur="2s" repeatCount="indefinite"/>
+                                            </path>
+                                        </pattern>
+                                        
+                                        <!-- Background Atmosphere -->
+                                        <radialGradient id="atmosphere" cx="50%" cy="50%" r="50%">
+                                            <stop offset="0%" style="stop-color:#0f172a;stop-opacity:0.8" />
+                                            <stop offset="50%" style="stop-color:#1e293b;stop-opacity:0.6" />
+                                            <stop offset="100%" style="stop-color:#334155;stop-opacity:0.4" />
+                                        </radialGradient>
+                                    </defs>
+                                    
+                                    <!-- Cinematic Background -->
+                                    <rect width="100%" height="100%" fill="url(#atmosphere)"/>
+                                    <rect width="100%" height="100%" fill="url(#cinematicGrid)"/>
+                                    
+                                    <!-- Central Core -->
+                                    <circle cx="400" cy="300" r="80" fill="none" stroke="rgba(99, 102, 241, 0.2)" stroke-width="2" stroke-dasharray="5,5">
+                                        <animate attributeName="stroke-dashoffset" values="0;20" dur="4s" repeatCount="indefinite"/>
+                                    </circle>
+                                    
+                                    <!-- Energy Field -->
+                                    <circle cx="400" cy="300" r="120" fill="none" stroke="rgba(139, 92, 246, 0.1)" stroke-width="1">
+                                        <animate attributeName="r" values="120;140;120" dur="6s" repeatCount="indefinite"/>
+                                        <animate attributeName="opacity" values="0.1;0.3;0.1" dur="6s" repeatCount="indefinite"/>
+                                    </circle>
+                                    
+                                    <!-- Dynamic connections -->
+                                    <g id="connections"></g>
+                                    
+                                    <!-- Dynamic neurons -->
+                                    <g id="neurons"></g>
+                                    
+                                    <!-- Activity pulses -->
+                                    <g id="pulses"></g>
+                                    
+                                    <!-- Energy waves -->
+                                    <g id="energyWaves"></g>
+                                    
+                                    <!-- Cinematic overlay -->
+                                    <rect width="100%" height="100%" fill="url(#energyFlow)" opacity="0.1"/>
+                                </svg>
+                                
+                                <div class="network-info">
+                                    <div class="info-panel">
+                                        <h4>Estado da Rede</h4>
+                                        <div class="info-item">
+                                            <span class="info-label">Neurônios Ativos:</span>
+                                            <span class="info-value" id="activeNeurons">0</span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Conexões Dinâmicas:</span>
+                                            <span class="info-value" id="dynamicConnections">0</span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Taxa de Adaptação:</span>
+                                            <span class="info-value" id="adaptationRate">0%</span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Plasticidade:</span>
+                                            <span class="info-value" id="plasticityLevel">Baixa</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="evolution-timeline">
+                                        <h4>Evolução Temporal</h4>
+                                        <div class="timeline">
+                                            <div class="timeline-item active">
+                                                <div class="timeline-dot"></div>
+                                                <div class="timeline-content">
+                                                    <span class="timeline-title">Inicialização</span>
+                                                    <span class="timeline-desc">Rede esparsa com conexões básicas</span>
+                                                </div>
+                                            </div>
+                                            <div class="timeline-item">
+                                                <div class="timeline-dot"></div>
+                                                <div class="timeline-content">
+                                                    <span class="timeline-title">Aprendizado</span>
+                                                    <span class="timeline-desc">Formação de padrões especializados</span>
+                                                </div>
+                                            </div>
+                                            <div class="timeline-item">
+                                                <div class="timeline-dot"></div>
+                                                <div class="timeline-content">
+                                                    <span class="timeline-title">Especialização</span>
+                                                    <span class="timeline-desc">Emergência de sub-redes funcionais</span>
+                                                </div>
+                                            </div>
+                                            <div class="timeline-item">
+                                                <div class="timeline-dot"></div>
+                                                <div class="timeline-content">
+                                                    <span class="timeline-title">Otimização</span>
+                                                    <span class="timeline-desc">Pruning e refinamento contínuo</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="architecture-diagram">
+                    <h3>
+                        <svg class="section-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Arquitetura da SEONN
+                    </h3>
+                    <div class="diagram">
+                        <div class="component nucleus">
+                            <div class="component-icon">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                    <circle cx="12" cy="12" r="3" fill="currentColor"/>
+                                    <path d="M12 1V6M12 18V23M1 12H6M18 12H23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <h4>Núcleo Gerenciador</h4>
+                            <p>Centro de auto-organização que observa padrões emergentes e ativa sub-redes especializadas</p>
+                                </div>
+                        <div class="component neurons">
+                            <div class="component-icon">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="12" r="3" fill="currentColor"/>
+                                    <path d="M12 1V6M12 18V23M1 12H6M18 12H23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <circle cx="12" cy="5" r="1" fill="currentColor"/>
+                                    <circle cx="12" cy="19" r="1" fill="currentColor"/>
+                                    <circle cx="5" cy="12" r="1" fill="currentColor"/>
+                                    <circle cx="19" cy="12" r="1" fill="currentColor"/>
+                                </svg>
+                            </div>
+                            <h4>Neurônios Autônomos</h4>
+                            <p>Unidades inteligentes com DNA Neural, capazes de aprendizado independente e especialização</p>
+                                </div>
+                        <div class="component connections">
+                            <div class="component-icon">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h4>Conexões Dinâmicas</h4>
+                            <p>Plasticidade sináptica virtual que forma e dissolve conexões baseadas em relevância</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="implementation-details">
+                    <h3>🛠️ Implementação</h3>
+                    <div class="tech-stack">
+                        <div class="tech-item">
+                            <span class="tech-name">PyTorch</span>
+                            <span class="tech-desc">Framework principal para redes neurais dinâmicas</span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-name">PyTorch Geometric</span>
+                            <span class="tech-desc">Extensão para operações em grafos dinâmicos</span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-name">NumPy</span>
+                            <span class="tech-desc">Computação científica e operações vetoriais</span>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-name">CUDA</span>
+                            <span class="tech-desc">Aceleração por GPU para processamento paralelo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="applications">
+                    <h3>🌐 Aplicações Práticas</h3>
+                    <div class="apps-grid">
+                        <div class="app-card">
+                            <div class="app-icon">🤖</div>
+                            <h4>Robótica Autônoma</h4>
+                            <p>Adaptação dinâmica a ambientes imprevisíveis</p>
+                        </div>
+                        <div class="app-card">
+                            <div class="app-icon">🏥</div>
+                            <h4>Diagnóstico Médico</h4>
+                            <p>Sistemas que evoluem com novos dados clínicos</p>
+                        </div>
+                        <div class="app-card">
+                            <div class="app-icon">🔒</div>
+                            <h4>Cibersegurança</h4>
+                            <p>Detecção proativa de ameaças emergentes</p>
+                            </div>
+                        <div class="app-card">
+                            <div class="app-icon">💬</div>
+                            <h4>Assistentes Virtuais</h4>
+                            <p>Personalização contínua baseada no comportamento</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Statistics Section -->
+        <section id="stats" class="section">
+            <div class="section-header">
+                <h2>📊 Estatísticas em Tempo Real</h2>
+                <p>Monitoramento da rede neural em funcionamento</p>
+            </div>
+
+            <div class="stats-content">
+                <div class="network-stats">
+                    <h3>🧠 Estado da Rede</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">🔗</div>
+                            <div class="stat-info">
+                                <span class="stat-label">Neurônios Ativos</span>
+                                <span class="stat-value" id="neurons">-</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⚡</div>
+                            <div class="stat-info">
+                                <span class="stat-label">Conexões Sinápticas</span>
+                                <span class="stat-value" id="connections">-</span>
+                            </div>
+                    </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">💚</div>
+                            <div class="stat-info">
+                                <span class="stat-label">Saúde Neural</span>
+                                <span class="stat-value" id="neuralHealth">-</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📈</div>
+                            <div class="stat-info">
+                                <span class="stat-label">Variação Atividade</span>
+                                <span class="stat-value" id="activityVariance">-</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🎯</div>
+                            <div class="stat-info">
+                                <span class="stat-label">Predições Totais</span>
+                                <span class="stat-value" id="totalPredictions">-</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⏱️</div>
+                            <div class="stat-info">
+                                <span class="stat-label">Modelo Ativo</span>
+                                <span class="stat-value" id="activeModel">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="performance-metrics">
+                    <h3>📈 Métricas de Desempenho</h3>
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <h4>Precisão Atual</h4>
+                            <div class="metric-value" id="currentAccuracy">-</div>
+                            <div class="metric-trend" id="accuracyTrend"></div>
+                        </div>
+                        <div class="metric-card">
+                            <h4>Tempo Médio de Resposta</h4>
+                            <div class="metric-value" id="avgResponseTime">-</div>
+                            <div class="metric-trend" id="responseTimeTrend"></div>
+                        </div>
+                        <div class="metric-card">
+                            <h4>Taxa de Adaptação</h4>
+                            <div class="metric-value" id="adaptationRate">-</div>
+                            <div class="metric-trend" id="adaptationTrend"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <p>🚀 Powered by <strong>SEONN Technology</strong></p>
+                    <p>Self-Evolving Organic Neural Network</p>
+                </div>
+                <div class="footer-right">
+                    <p>Desenvolvido com PyTorch & PyTorch Geometric</p>
+                    <p>© 2025 - Demonstração Interativa</p>
+                </div>
+        </div>
+    </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Ambientes Virtuais
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+seonn_env/
+renault_env/
+*.venv
+
+# Distribuição e Embalagem
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Datasets grandes
+data/MNIST/
+data/images/
+data/labels/
+*.idx3-ubyte
+*.idx1-ubyte
+
+# Modelos treinados (muito grandes para Git)
+*.pth
+*.pt
+*.onnx
+*.h5
+*.ckpt
+*.pkl
+*.joblib
+models/*.pt
+models/*.pth
+models/*.onnx
+SEONN/examples/*.pth
+
+# Outputs de treinamento e execução
+runs/
+weights/
+checkpoints/
+wandb/
+mlruns/
+*.avi
+*.mp4
+
+# Logs
+*.log
+logs/
+*.out
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# Sistema Operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Arquivos temporários
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Backups
+*.bak
+*.backup
+*.old
+
+# Node modules (React/Vite)
+node_modules/
+dist/
+dist-ssr/
+
+# Arquivos específicos do projeto
+emotion-ferplus-8.onnx
+yolov8n.pt
+
